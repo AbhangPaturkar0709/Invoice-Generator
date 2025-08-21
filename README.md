@@ -9,8 +9,8 @@ Installation Steps
 
 Step 1: Clone the repository
 ----------------------------
-git clone https://github.com/AbhangPaturkar0709/Invoice-Generator
-cd Invoice-Generator
+- git clone https://github.com/AbhangPaturkar0709/Invoice-Generator
+- cd Invoice-Generator
 
 Step 2: Install Frontend Dependencies
 -------------------------------------
@@ -35,12 +35,12 @@ Step 4: Set up Environment Variables
 Running the Application
 -----------------------
 1. Start the backend server
-cd server
+- cd server
 npm run dev
 
 2. Start the frontend client
-cd ../client
-npm run dev
+- cd ../client
+- npm run dev
 
 
 3. Open your browser at:
