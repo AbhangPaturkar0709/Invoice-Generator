@@ -32,7 +32,7 @@ Step 4: Set up Environment Variables
 
 > Replace `<your_mongodb_connection_string>` and `<your_jwt_secret>` with your actual values.
 
-Running the Application
+Step 5: Running the Application
 -----------------------
 1. Start the backend server
 - cd server
