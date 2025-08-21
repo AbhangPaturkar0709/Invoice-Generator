@@ -34,9 +34,6 @@ Step 4: Set up Environment Variables
 
 Running the Application
 -----------------------
-
-Development Mode
-----------------
 1. Start the backend server
 cd server
 npm run dev
