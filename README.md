@@ -14,21 +14,21 @@ cd Invoice-Generator
 
 Step 2: Install Frontend Dependencies
 -------------------------------------
-cd client
-npm install
+- cd client
+- npm install
 
 Step 3: Install Backend Dependencies
 ------------------------------------
-cd ../server
-npm install
+- cd ../server
+- npm install
 
 Step 4: Set up Environment Variables
 ------------------------------------
 1. Create a `.env` file inside the `server` folder.
 2. Add the following variables:
-PORT=5000
-MONGO_URL=<your_mongodb_connection_string>
-JWT_SECRET=<your_jwt_secret>
+- PORT=5000
+- MONGO_URL=<your_mongodb_connection_string>
+- JWT_SECRET=<your_jwt_secret>
 
 > Replace `<your_mongodb_connection_string>` and `<your_jwt_secret>` with your actual values.
 
