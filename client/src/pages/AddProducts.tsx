@@ -116,7 +116,6 @@ const handleGenerateInvoice = async () => {
 
     toast.success("Invoice downloaded successfully");
   } catch (err) {
-    console.error(err);
     toast.error("Error generating invoice");
   }
 };
