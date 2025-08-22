@@ -10,7 +10,11 @@ connectDB();
 
 const app = express();
 app.use(json());
-app.use(cors());
+app.use(cors({
+  origin: "https://invoice-generator-8lfq.onrender.com",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 // Routes
 app.use("/api/auth", authRoutes);
