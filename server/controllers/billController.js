@@ -246,17 +246,16 @@ export const generateBill = async (req, res) => {
     });
     await bill.save();
 
-    // Puppeteer PDF
    const browser = await puppeteer.launch({
-      headless: "new",   // modern headless mode
+      headless: "new",
       args: [
         "--no-sandbox",
         "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
         "--disable-gpu",
-      ],
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath()
+      ]
     });
+
     const page = await browser.newPage();
 
     const html = generateInvoiceHTML(items, customerName, customerEmail, subTotal, totalWithGST, gstRate);
