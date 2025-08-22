@@ -1,5 +1,6 @@
 import Bill from "../models/Bill.js";
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium";
 
 // ✅ Helper: generate invoice HTML
 const generateInvoiceHTML = (items, customerName, customerEmail, subTotal, totalWithGST, gstRate) => {
@@ -66,7 +67,7 @@ const generateInvoiceHTML = (items, customerName, customerEmail, subTotal, total
         margin: 0;
         font-size: 20px;
         font-weight: bold;
-        color: #CCF575; /* ✅ Highlight customer name */
+        color: #CCF575;
       }
       .customer-box .label {
         font-size: 12px;
@@ -146,22 +147,16 @@ const generateInvoiceHTML = (items, customerName, customerEmail, subTotal, total
   </head>
   <body>
     <!-- Header -->
-    <!-- Header -->
-    <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid #ddd; padding-bottom:10px;">
-      <div style="display:flex; align-items:center;">
-        <!-- ✅ Logo placeholder -->
-        <img src="https://dummyimage.com/40x40/1d2352/ffffff&text=L" alt="Levitation Logo" style="width:40px; margin-right:8px;" />
-        <div style="display:flex; flex-direction:column; line-height:1.2; font-size:18px; font-weight:bold; color:#1d2352;">
-          <div>Levitation</div>
-          <small style="font-weight:normal; font-size:12px; color:#555;">Infotech</small>
-        </div>
+    <div class="header">
+      <div class="logo">
+        <img src="https://dummyimage.com/40x40/1d2352/ffffff&text=L" alt="Levitation Logo" />
+        <div>Levitation<br/><small>Infotech</small></div>
       </div>
-      <div style="text-align:right;">
-        <h2 style="margin:0; font-size:18px; font-weight:bold;">INVOICE GENERATOR</h2>
-        <small style="font-size:12px; color:#666;">Sample Output</small>
+      <div class="invoice-title">
+        <h2>INVOICE GENERATOR</h2>
+        <small>Sample Output</small>
       </div>
     </div>
-
 
     <!-- Customer Info -->
     <div class="customer-box">
@@ -190,7 +185,7 @@ const generateInvoiceHTML = (items, customerName, customerEmail, subTotal, total
         <tr>
           <td>${i.name}</td>
           <td>${i.quantity}</td>
-          <td>${i.price}</td>
+          <td>₹ ${i.price.toFixed(2)}</td>
           <td>₹ ${(i.price * i.quantity).toFixed(2)}</td>
         </tr>`).join("")}
       </tbody>
@@ -213,8 +208,6 @@ const generateInvoiceHTML = (items, customerName, customerEmail, subTotal, total
         </tr>
       </table>
     </div>
-
-    <div style="clear:both"></div>
   </body>
   </html>
   `;
@@ -245,31 +238,28 @@ export const generateBill = async (req, res) => {
       customerEmail,
     });
     await bill.save();
-    console.log("data saved")
-   const browser = await puppeteer.launch({
-      headless: "new",
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-gpu",
-      ]
+    console.log("✅ Data saved");
+
+    // Launch Puppeteer with @sparticuz/chromium
+    const browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
     });
-    console.log("step-1")
+    console.log("✅ Browser launched");
 
     const page = await browser.newPage();
-    console.log("step-2")
-
     const html = generateInvoiceHTML(items, customerName, customerEmail, subTotal, totalWithGST, gstRate);
     await page.setContent(html, { waitUntil: "networkidle0" });
-    console.log("step-3")
+    console.log("✅ HTML loaded");
 
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
       margin: { top: 0, right: 0, bottom: 0, left: 0 }
     });
-    console.log("step-4")
+    console.log("✅ PDF generated");
 
     await browser.close();
 
@@ -278,10 +268,10 @@ export const generateBill = async (req, res) => {
       "Content-Type": "application/pdf",
       "Content-Disposition": "attachment; filename=invoice.pdf",
     });
-console.log("step-5")
     res.send(pdfBuffer);
+
   } catch (err) {
-    console.error("Error in generateBill:", err);
+    console.error("❌ Error in generateBill:", err);
     res.status(500).json({ message: err.message });
   }
 };
