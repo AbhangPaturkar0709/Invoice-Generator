@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", // backend URL
+  baseURL: "https://invoice-generator-backend-h4xg.onrender.com/api", // backend URL
 });
 
 // Add token to requests if available
