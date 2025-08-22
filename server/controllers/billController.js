@@ -247,9 +247,14 @@ export const generateBill = async (req, res) => {
     await bill.save();
 
     // Puppeteer PDF
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+   const browser = await puppeteer.launch({
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+      ],
+      headless: true,  // always headless in production
     });
     const page = await browser.newPage();
 
