@@ -248,13 +248,14 @@ export const generateBill = async (req, res) => {
 
     // Puppeteer PDF
    const browser = await puppeteer.launch({
+      headless: "new",   // modern headless mode
       args: [
         "--no-sandbox",
         "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
         "--disable-gpu",
       ],
-      headless: true,  // always headless in production
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath()
     });
     const page = await browser.newPage();
 
