@@ -245,7 +245,7 @@ export const generateBill = async (req, res) => {
       customerEmail,
     });
     await bill.save();
-
+    console.log("data saved")
    const browser = await puppeteer.launch({
       headless: "new",
       args: [
@@ -255,17 +255,21 @@ export const generateBill = async (req, res) => {
         "--disable-gpu",
       ]
     });
+    console.log("step-1")
 
     const page = await browser.newPage();
+    console.log("step-2")
 
     const html = generateInvoiceHTML(items, customerName, customerEmail, subTotal, totalWithGST, gstRate);
     await page.setContent(html, { waitUntil: "networkidle0" });
+    console.log("step-3")
 
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
       margin: { top: 0, right: 0, bottom: 0, left: 0 }
     });
+    console.log("step-4")
 
     await browser.close();
 
@@ -274,7 +278,7 @@ export const generateBill = async (req, res) => {
       "Content-Type": "application/pdf",
       "Content-Disposition": "attachment; filename=invoice.pdf",
     });
-
+console.log("step-5")
     res.send(pdfBuffer);
   } catch (err) {
     console.error("Error in generateBill:", err);
