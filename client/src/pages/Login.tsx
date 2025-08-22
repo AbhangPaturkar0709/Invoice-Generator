@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import API from "../api"; // ✅ Axios instance
+import API from "../context/api";
 
 // ✅ Replace with your images
 import login1 from "../assets/images/login1.png";

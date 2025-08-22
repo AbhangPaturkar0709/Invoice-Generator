@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import signup1 from "../assets/images/signup1.png";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom"; // for navigation
-import API from '../api.js';
+import API from "../context/api";
 import { toast } from "react-toastify";
 
 const Signup: React.FC = () => {

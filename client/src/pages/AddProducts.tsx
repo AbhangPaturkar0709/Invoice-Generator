@@ -1,9 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Header from "../components/Header";
 import { Trash2 } from "lucide-react";
-import { AuthContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
-import API from '../api.js';
+import API from "../context/api";
 
 interface Product {
   name: string;
@@ -27,8 +26,6 @@ const AddProducts: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
-
-  const { token } = useContext(AuthContext);
 
   const handleAddProduct = () => {
     if (!name || !price || !quantity) return;
