@@ -86,7 +86,6 @@ const AddProducts: React.FC = () => {
 
 const handleGenerateInvoice = async () => {
   try {
-    // ✅ Validation before API call
     if (!customerName.trim() || !customerEmail.trim()) {
       toast.error("Customer name and email are required");
       return;
@@ -95,24 +94,27 @@ const handleGenerateInvoice = async () => {
     const res = await API.post(
       "/bills/generate",
       { items: products, customerName, customerEmail },
-      {
-        responseType: "blob", // for PDF
-      }
+      { responseType: "blob" }
     );
 
-    // Create a blob URL
     const pdfBlob = new Blob([res.data], { type: "application/pdf" });
     const pdfUrl = window.URL.createObjectURL(pdfBlob);
 
-    // Open in a new tab
-    window.open(pdfUrl);
+    // ✅ Trigger system "Save As" / download
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = `Invoice_${customerName}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 
-    // Reset modal & fields
+    window.URL.revokeObjectURL(pdfUrl); // clean up
+
     setIsModalOpen(false);
     setCustomerName("");
     setCustomerEmail("");
 
-    toast.success("Invoice generated successfully");
+    toast.success("Invoice downloaded successfully");
   } catch (err) {
     console.error(err);
     toast.error("Error generating invoice");
